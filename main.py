@@ -1,6 +1,6 @@
 import sys
 import cv2
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QPushButton, QComboBox
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QPushButton, QComboBox, QHBoxLayout
 from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.QtCore import QTimer
 from PIL import Image
@@ -22,6 +22,7 @@ class WebcamApp(QWidget):
         super().__init__()
 
         # UI components
+        self.camera_label = QLabel("Select Camera:", self)
         self.camera_selector = QComboBox(self)
         self.camera_selector.addItems([str(cam) for cam in detect_cameras()])
         self.camera_selector.currentIndexChanged.connect(self.update_camera)
@@ -34,8 +35,13 @@ class WebcamApp(QWidget):
 
         self.label = QLabel(self)
 
+        # Horizontal layout for camera label and selector
+        camera_layout = QHBoxLayout()
+        camera_layout.addWidget(self.camera_label, 1)
+        camera_layout.addWidget(self.camera_selector, 4)
+
         layout = QVBoxLayout(self)
-        layout.addWidget(self.camera_selector)
+        layout.addLayout(camera_layout)
         layout.addWidget(self.start_button)
         layout.addWidget(self.stop_button)
         layout.addWidget(self.label)
